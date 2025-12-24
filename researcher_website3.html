@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andy Houldcroft - Quantitative Ecologist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-weight: 300;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #fff;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background: #0a0a0a;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode nav {
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode nav .logo,
+        body.dark-mode nav a {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .hero {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+
+        body.dark-mode .hero .subtitle {
+            color: #a0a0a0;
+        }
+
+        body.dark-mode .hero-images .placeholder {
+            background: rgba(255, 255, 255, 0.1);
+            color: #a0a0a0;
+        }
+
+        body.dark-mode .card {
+            background: #1a1a1a;
+        }
+
+        body.dark-mode .card-image {
+            background: #2d2d2d;
+            color: #666;
+        }
+
+        body.dark-mode .card-description {
+            color: #a0a0a0;
+        }
+
+        body.dark-mode .section-subtitle {
+            color: #a0a0a0;
+        }
+
+        body.dark-mode .publication-item {
+            border-bottom: 1px solid #2d2d2d;
+        }
+
+        body.dark-mode .pub-authors,
+        body.dark-mode .pub-journal {
+            color: #a0a0a0;
+        }
+
+        body.dark-mode .pub-link {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .photo-grid .placeholder {
+            background: #2d2d2d;
+            color: #666;
+        }
+
+        body.dark-mode .contact-content a {
+            color: #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        body.dark-mode footer {
+            background: #0f0f0f;
+        }
+
+        body.dark-mode .footer-links a,
+        body.dark-mode .social-links a {
+            color: #e0e0e0;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: transparent;
+            border: 1px solid rgba(26, 26, 26, 0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        body.dark-mode .theme-toggle {
+            border: 1px solid rgba(224, 224, 224, 0.2);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(26, 26, 26, 0.05);
+            border-color: rgba(26, 26, 26, 0.4);
+        }
+
+        body.dark-mode .theme-toggle:hover {
+            background: rgba(224, 224, 224, 0.05);
+            border-color: rgba(224, 224, 224, 0.4);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            color: #1a1a1a;
+        }
+
+        body.dark-mode .theme-toggle svg {
+            color: #e0e0e0;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 4rem;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        nav .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        nav .logo {
+            font-size: 1.1rem;
+            font-weight: 300;
+            text-decoration: none;
+            color: #1a1a1a;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #1a1a1a;
+            font-size: 1.1rem;
+            font-weight: 300;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.6;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 2rem;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: #666;
+            margin-bottom: 3rem;
+        }
+
+        .hero-images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            max-width: 900px;
+            margin-top: 3rem;
+        }
+
+        .hero-images .placeholder {
+            width: 100%;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 8rem 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 4rem;
+            max-width: 800px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #f5f5f5;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 400px;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .card-content {
+            padding: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .card-arrow {
+            display: inline-block;
+            margin-left: 0.5rem;
+            transition: transform 0.3s;
+        }
+
+        .card:hover .card-arrow {
+            transform: translateX(5px);
+        }
+
+        .publications-list {
+            max-width: 900px;
+        }
+
+        .publication-item {
+            padding: 2rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .publication-item:last-child {
+            border-bottom: none;
+        }
+
+        .pub-title {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .pub-authors {
+            color: #666;
+            margin-bottom: 0.3rem;
+        }
+
+        .pub-journal {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .pub-link {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pub-link:hover {
+            opacity: 0.6;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .photo-grid .placeholder {
+            width: 100%;
+            height: 350px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.9rem;
+            transition: transform 0.3s;
+        }
+
+        .photo-grid .placeholder:hover {
+            transform: scale(1.02);
+        }
+
+        .contact-content {
+            max-width: 600px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .contact-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-content a {
+            color: #1a1a1a;
+            text-decoration: none;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .contact-content a:hover {
+            opacity: 0.6;
+        }
+
+        footer {
+            background: #f5f5f5;
+            padding: 3rem 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .social-links a {
+            color: #1a1a1a;
+            font-size: 1.5rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .social-links a:hover {
+            opacity: 0.6;
+        }
+
+        .social-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .photo-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 2rem;
+            }
+
+            nav ul {
+                gap: 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .hero-images {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 4rem 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .photo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 2rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+    </button>
+
+    <script>
+        // Check for saved theme preference or default to system preference
+        const getPreferredTheme = () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                return savedTheme;
+            }
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        };
+
+        const setTheme = (theme) => {
+            if (theme === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+            localStorage.setItem('theme', theme);
+        };
+
+        // Set theme on load
+        setTheme(getPreferredTheme());
+
+        // Toggle theme
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                setTheme(e.matches ? 'dark' : 'light');
+            }
+        });
+    </script>
+
+    <nav>
+        <div class="nav-content">
+            <a href="#home" class="logo">Andy Houldcroft</a>
+            <ul>
+                <li><a href="#research">Research</a></li>
+                <li><a href="#photography">Photography</a></li>
+                <li><a href="#store">Store</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <h1>Andy Houldcroft</h1>
+        <p class="subtitle">Quantitative Ecologist</p>
+        <div class="hero-images">
+            <div class="placeholder">Hero Image 1</div>
+            <div class="placeholder">Hero Image 2</div>
+            <div class="placeholder">Hero Image 3</div>
+        </div>
+    </section>
+
+    <section id="research" class="section">
+        <h2 class="section-title">Research</h2>
+        <p class="section-subtitle">[2-3 sentences describing your overall research program - what questions you're asking, what approaches you use, why it matters]</p>
+        
+        <div class="cards">
+            <div class="card">
+                <div class="card-image">Project Image 1</div>
+                <div class="card-content">
+                    <h3 class="card-title">[Project Title 1] <span class="card-arrow">→</span></h3>
+                    <p class="card-description">[1-2 sentence description of the project, its goals, and current status]</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-image">Project Image 2</div>
+                <div class="card-content">
+                    <h3 class="card-title">[Project Title 2] <span class="card-arrow">→</span></h3>
+                    <p class="card-description">[1-2 sentence description of the project, its goals, and current status]</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-image">Project Image 3</div>
+                <div class="card-content">
+                    <h3 class="card-title">[Project Title 3] <span class="card-arrow">→</span></h3>
+                    <p class="card-description">[1-2 sentence description of the project, its goals, and current status]</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-image">Project Image 4</div>
+                <div class="card-content">
+                    <h3 class="card-title">[Project Title 4] <span class="card-arrow">→</span></h3>
+                    <p class="card-description">[1-2 sentence description of the project, its goals, and current status]</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="publications" class="section">
+        <h2 class="section-title">Publications</h2>
+        
+        <div class="publications-list">
+            <div class="publication-item">
+                <div class="pub-title">Joint spatial modeling of cluster size and density for a heavily hunted primate persisting in a heterogeneous landscape</div>
+                <div class="pub-authors">Andrew Houldcroft, Finn Lindgren, Américo Sanhá, Maimuna Jaló, Aissa Regalla de Barros, Kimberley J. Hockings, Elena Bersacola</div>
+                <div class="pub-journal">Ecography, 2024</div>
+                <a href="https://doi.org/10.1111/ecog.07399" class="pub-link" target="_blank">View Publication →</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="photography" class="section">
+        <h2 class="section-title">Photography</h2>
+        <p class="section-subtitle">[Optional: Brief description of your photography interests or context]</p>
+        
+        <div class="photo-grid">
+            <div class="placeholder">Photo 1</div>
+            <div class="placeholder">Photo 2</div>
+            <div class="placeholder">Photo 3</div>
+            <div class="placeholder">Photo 4</div>
+            <div class="placeholder">Photo 5</div>
+            <div class="placeholder">Photo 6</div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <h2 class="section-title">Contact</h2>
+        
+        <div class="contact-content">
+            <p><strong>Email:</strong> <a href="mailto:A.Houldcroft@exeter.ac.uk">A.Houldcroft@exeter.ac.uk</a></p>
+            
+            <p><strong>Office:</strong><br>
+            Stella Turk Building<br>
+            University of Exeter<br>
+            Penryn Campus<br>
+            Treliever Road<br>
+            Penryn, Cornwall<br>
+            TR10 9FE</p>
+            
+            <div style="display: flex; gap: 1.5rem; margin-top: 2rem;">
+                <a href="https://orcid.org/0000-0001-9568-2259" target="_blank" title="ORCID">
+                    <svg class="social-icon" viewBox="0 0 256 256" fill="currentColor" stroke="currentColor" stroke-width="0">
+                        <path d="M128,24A104,104,0,1,0,232,128,104.2,104.2,0,0,0,128,24Zm-8,168a8,8,0,0,1-8-8V88a8,8,0,0,1,16,0v96A8,8,0,0,1,120,192Zm-8-128a12,12,0,1,1,12-12A12,12,0,0,1,112,64Zm72,112a32,32,0,0,1-32,32,8,8,0,0,1,0-16,16,16,0,0,0,0-32V96a8,8,0,0,1,16,0v8a32,32,0,0,1,16,27.7Z"/>
+                    </svg>
+                </a>
+                <a href="https://www.linkedin.com/in/yourprofile" target="_blank" title="LinkedIn">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                        <rect x="2" y="9" width="4" height="12"></rect>
+                        <circle cx="4" cy="4" r="2"></circle>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div>© 2026 Andy Houldcroft</div>
+            <div class="footer-links">
+                <a href="#research">Research</a>
+                <a href="#photography">Photography</a>
+                <a href="#store">Store</a>
+                <a href="about.html">About</a>
+            </div>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/yourprofile" target="_blank" title="LinkedIn">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                        <rect x="2" y="9" width="4" height="12"></rect>
+                        <circle cx="4" cy="4" r="2"></circle>
+                    </svg>
+                </a>
+                <a href="https://orcid.org/0000-0001-9568-2259" target="_blank" title="ORCID">
+                    <svg class="social-icon" viewBox="0 0 256 256" fill="currentColor" stroke="currentColor" stroke-width="0">
+                        <path d="M128,24A104,104,0,1,0,232,128,104.2,104.2,0,0,0,128,24Zm-8,168a8,8,0,0,1-8-8V88a8,8,0,0,1,16,0v96A8,8,0,0,1,120,192Zm-8-128a12,12,0,1,1,12-12A12,12,0,0,1,112,64Zm72,112a32,32,0,0,1-32,32,8,8,0,0,1,0-16,16,16,0,0,0,0-32V96a8,8,0,0,1,16,0v8a32,32,0,0,1,16,27.7Z"/>
+                    </svg>
+                </a>
+                <a href="https://www.instagram.com/yourprofile" target="_blank" title="Instagram">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                </a>
+                <a href="https://github.com/yourprofile" target="_blank" title="GitHub">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
