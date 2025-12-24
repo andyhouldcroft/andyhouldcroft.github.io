@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andy Houldcroft - Quantitative Ecologist</title>
+    <title>Research - Andy Houldcroft</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -21,6 +21,7 @@
             color: #1a1a1a;
             background: #fff;
             transition: background-color 0.3s, color 0.3s;
+            padding-top: 80px;
         }
 
         body.dark-mode {
@@ -42,19 +43,6 @@
             background-color: #e0e0e0;
         }
 
-        body.dark-mode .hero {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-        }
-
-        body.dark-mode .hero .subtitle {
-            color: #a0a0a0;
-        }
-
-        body.dark-mode .hero-images .placeholder {
-            background: rgba(255, 255, 255, 0.1);
-            color: #a0a0a0;
-        }
-
         body.dark-mode .card {
             background: #1a1a1a;
         }
@@ -70,6 +58,24 @@
 
         body.dark-mode .section-subtitle {
             color: #a0a0a0;
+        }
+
+        body.dark-mode .publication-item {
+            border-bottom: 1px solid #2d2d2d;
+        }
+
+        body.dark-mode .pub-authors,
+        body.dark-mode .pub-journal {
+            color: #a0a0a0;
+        }
+
+        body.dark-mode .pub-link {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .pub-cover {
+            background: #2d2d2d;
+            color: #666;
         }
 
         body.dark-mode .contact-content a {
@@ -184,48 +190,6 @@
             left: 0;
         }
 
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 2rem;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 300;
-            margin-bottom: 1rem;
-            letter-spacing: -1px;
-        }
-
-        .hero .subtitle {
-            font-size: 1.5rem;
-            color: #666;
-            margin-bottom: 3rem;
-        }
-
-        .hero-images {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .hero-images .placeholder {
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            font-size: 0.9rem;
-        }
-
         .section {
             padding: 6rem 4rem;
             max-width: 1400px;
@@ -249,7 +213,6 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 2rem;
-            margin-top: 3rem;
         }
 
         .card {
@@ -257,10 +220,6 @@
             border-radius: 8px;
             overflow: hidden;
             transition: transform 0.3s;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: block;
         }
 
         .card:hover {
@@ -303,6 +262,70 @@
         .card-description {
             color: #666;
             line-height: 1.6;
+        }
+
+        .publications-list {
+            max-width: 900px;
+        }
+
+        .publication-item {
+            padding: 2rem 0;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .publication-item:last-child {
+            border-bottom: none;
+        }
+
+        .pub-cover {
+            width: 120px;
+            height: 160px;
+            flex-shrink: 0;
+            background: #e0e0e0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .pub-content {
+            flex: 1;
+        }
+
+        .pub-title {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .pub-authors {
+            color: #666;
+            margin-bottom: 0.3rem;
+        }
+
+        .pub-journal {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .pub-link {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pub-link:hover {
+            opacity: 0.6;
         }
 
         .contact-content {
@@ -383,16 +406,8 @@
         }
 
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
             .cards {
                 grid-template-columns: 1fr;
-            }
-
-            .hero-images {
-                flex-direction: column;
             }
 
             nav {
@@ -411,6 +426,15 @@
                 flex-direction: column;
                 gap: 2rem;
                 text-align: center;
+            }
+
+            .publication-item {
+                flex-direction: column;
+            }
+
+            .pub-cover {
+                width: 100%;
+                height: 200px;
             }
         }
     </style>
@@ -474,54 +498,58 @@
         </div>
     </nav>
 
-    <section class="hero">
-        <h1>Andy Houldcroft</h1>
-        <p class="subtitle">Quantitative Ecologist</p>
-        <div class="hero-images">
-            <div class="placeholder">Hero Image 1</div>
-            <div class="placeholder">Hero Image 2</div>
-            <div class="placeholder">Hero Image 3</div>
+    <section id="research" class="section">
+        <h2 class="section-title">Research</h2>
+        <p class="section-subtitle">[2-3 sentences describing your overall research program - what questions you're asking, what approaches you use, why it matters]</p>
+        
+        <div class="cards">
+            <div class="card">
+                <div class="card-image">Project Image 1</div>
+                <div class="card-content">
+                    <h3 class="card-title">[Project Title 1] <span class="card-arrow">→</span></h3>
+                    <p class="card-description">[1-2 sentence description of the project, its goals, and current status]</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-image">Project Image 2</div>
+                <div class="card-content">
+                    <h3 class="card-title">[Project Title 2] <span class="card-arrow">→</span></h3>
+                    <p class="card-description">[1-2 sentence description of the project, its goals, and current status]</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-image">Project Image 3</div>
+                <div class="card-content">
+                    <h3 class="card-title">[Project Title 3] <span class="card-arrow">→</span></h3>
+                    <p class="card-description">[1-2 sentence description of the project, its goals, and current status]</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-image">Project Image 4</div>
+                <div class="card-content">
+                    <h3 class="card-title">[Project Title 4] <span class="card-arrow">→</span></h3>
+                    <p class="card-description">[1-2 sentence description of the project, its goals, and current status]</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section class="section">
-        <h2 class="section-title">About Me</h2>
-        <p class="section-subtitle">[Write 2-3 paragraphs here giving an overview of yourself, your background, what drives your work, and what you're passionate about. This is your opportunity to introduce yourself to visitors in a personal and engaging way.]</p>
-    </section>
-
-    <section class="section">
-        <div class="cards">
-            <a href="research.html" class="card">
-                <div class="card-image">Research</div>
-                <div class="card-content">
-                    <h3 class="card-title">Research <span class="card-arrow">→</span></h3>
-                    <p class="card-description">Explore my quantitative ecology projects and publications</p>
+    <section id="publications" class="section">
+        <h2 class="section-title">Publications</h2>
+        
+        <div class="publications-list">
+            <div class="publication-item">
+                <div class="pub-cover">Journal Cover</div>
+                <div class="pub-content">
+                    <div class="pub-title">Joint spatial modeling of cluster size and density for a heavily hunted primate persisting in a heterogeneous landscape</div>
+                    <div class="pub-authors">Andrew Houldcroft, Finn Lindgren, Américo Sanhá, Maimuna Jaló, Aissa Regalla de Barros, Kimberley J. Hockings, Elena Bersacola</div>
+                    <div class="pub-journal">Ecography, 2024</div>
+                    <a href="https://doi.org/10.1111/ecog.07399" class="pub-link" target="_blank">View Publication →</a>
                 </div>
-            </a>
-
-            <a href="photography.html" class="card">
-                <div class="card-image">Photography</div>
-                <div class="card-content">
-                    <h3 class="card-title">Photography <span class="card-arrow">→</span></h3>
-                    <p class="card-description">View my wildlife and nature photography collection</p>
-                </div>
-            </a>
-
-            <a href="store.html" class="card">
-                <div class="card-image">Store</div>
-                <div class="card-content">
-                    <h3 class="card-title">Store <span class="card-arrow">→</span></h3>
-                    <p class="card-description">Browse prints and products from my photography</p>
-                </div>
-            </a>
-
-            <a href="about.html" class="card">
-                <div class="card-image">About</div>
-                <div class="card-content">
-                    <h3 class="card-title">About <span class="card-arrow">→</span></h3>
-                    <p class="card-description">Learn more about my background and journey</p>
-                </div>
-            </a>
+            </div>
         </div>
     </section>
 
