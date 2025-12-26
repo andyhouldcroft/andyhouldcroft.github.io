@@ -78,10 +78,7 @@
             color: #666;
         }
 
-        body.dark-mode .contact-content a {
-            color: #e0e0e0;
-            border-bottom: 1px solid #e0e0e0;
-        }
+        
 
         body.dark-mode footer {
             background: #0f0f0f;
@@ -181,6 +178,14 @@
             max-width: 1400px;
             margin: 0 auto;
         }
+        .cards-section {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .contact-section {
+            padding-top: 2rem;
+        }
 
         .section-title {
             font-size: 2.5rem;
@@ -206,6 +211,9 @@
             border-radius: 8px;
             overflow: hidden;
             transition: transform 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
 
         .card:hover {
@@ -228,9 +236,10 @@
         }
 
         .card-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 300;
             margin-bottom: 0.5rem;
+            line-height: 1.4;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -324,14 +333,35 @@
             margin-bottom: 1.5rem;
         }
 
-        .contact-content a {
+                        .contact-content a {
             color: #1a1a1a;
             text-decoration: none;
-            border-bottom: 1px solid #1a1a1a;
+            position: relative;
+            display: inline-block;
         }
 
-        .contact-content a:hover {
-            opacity: 0.6;
+        .contact-content a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 50%;
+            background-color: #1a1a1a;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        .contact-content a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        body.dark-mode .contact-content a {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .contact-content a::after {
+            background-color: #e0e0e0;
         }
 
         .social-icon {
@@ -367,14 +397,10 @@
             gap: 2rem;
         }
 
-        .footer-links a {
+                .footer-links a {
             color: #1a1a1a;
             text-decoration: none;
             font-size: 0.9rem;
-        }
-
-        .footer-links a:hover {
-            opacity: 0.6;
         }
 
                 .social-links {
@@ -382,15 +408,11 @@
             gap: 1.5rem;
         }
 
-        .social-links a {
+                .social-links a {
             color: #1a1a1a;
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 300;
-        }
-
-        .social-links a:hover {
-            opacity: 0.6;
         }
 
         @media (max-width: 768px) {
@@ -426,6 +448,7 @@
             }
         }
     </style>
+    <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 <body>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
@@ -499,46 +522,62 @@
         </div>
     </nav>
 
-    <section id="research" class="section">
+    <section id="research" class="section cards-section">
         <h2 class="section-title">Research</h2>
         <p class="section-subtitle">[2-3 sentences describing your overall research program - what questions you're asking, what approaches you use, why it matters]</p>
         
         <div class="cards">
-            <div class="card">
-                <div class="card-image">Project Image 1</div>
+            <a href="/research/habitat-mapping" class="card">
+                <div class="card-image">Project Image</div>
                 <div class="card-content">
-                    <h3 class="card-title">[Project Title 1] <span class="card-arrow">→</span></h3>
-                    <p class="card-description">[1-2 sentence description of the project, its goals, and current status]</p>
+                    <h3 class="card-title">Mapping habitat in complex tropical landscapes with geospatial foundation models <span class="card-arrow">→</span></h3>
+                    <p class="card-description">2025 - ongoing</p>
                 </div>
-            </div>
+            </a>
 
-            <div class="card">
-                <div class="card-image">Project Image 2</div>
+            <a href="/research/bioacoustic-monitoring" class="card">
+                <div class="card-image">Project Image</div>
                 <div class="card-content">
-                    <h3 class="card-title">[Project Title 2] <span class="card-arrow">→</span></h3>
-                    <p class="card-description">[1-2 sentence description of the project, its goals, and current status]</p>
+                    <h3 class="card-title">Automating bioacoustic monitoring in a primate diversity hotspot <span class="card-arrow">→</span></h3>
+                    <p class="card-description">2025 - ongoing</p>
                 </div>
-            </div>
+            </a>
 
-            <div class="card">
-                <div class="card-image">Project Image 3</div>
+            <a href="/research/data-fusion" class="card">
+                <div class="card-image">Project Image</div>
                 <div class="card-content">
-                    <h3 class="card-title">[Project Title 3] <span class="card-arrow">→</span></h3>
-                    <p class="card-description">[1-2 sentence description of the project, its goals, and current status]</p>
+                    <h3 class="card-title">Data fusion for great ape population monitoring <span class="card-arrow">→</span></h3>
+                    <p class="card-description">2024 - ongoing</p>
                 </div>
-            </div>
+            </a>
 
-            <div class="card">
-                <div class="card-image">Project Image 4</div>
+            <a href="/research/joint-spatial-models" class="card">
+                <div class="card-image">Project Image</div>
                 <div class="card-content">
-                    <h3 class="card-title">[Project Title 4] <span class="card-arrow">→</span></h3>
-                    <p class="card-description">[1-2 sentence description of the project, its goals, and current status]</p>
+                    <h3 class="card-title">Improving indirect population monitoring with joint spatial models <span class="card-arrow">→</span></h3>
+                    <p class="card-description">2024 - ongoing</p>
                 </div>
-            </div>
+            </a>
+
+            <a href="/research/camera-trap-models" class="card">
+                <div class="card-image">Project Image</div>
+                <div class="card-content">
+                    <h3 class="card-title">Separable space-time models for camera trap distance sampling <span class="card-arrow">→</span></h3>
+                    <p class="card-description">2024 - ongoing</p>
+                </div>
+            </a>
+
+            <a href="/research/density-cluster-models" class="card">
+                <div class="card-image">Project Image</div>
+                <div class="card-content">
+                    <h3 class="card-title">Joint spatial modelling of wildlife density and cluster size <span class="card-arrow">→</span></h3>
+                    <p class="card-description">2022 - 2024</p>
+                </div>
+            </a>
         </div>
     </section>
 
-    <section id="publications" class="section">
+    <section id="publications" class="section cards-section">
         <h2 class="section-title">Publications</h2>
         
         <div class="publications-list">
@@ -554,7 +593,7 @@
         </div>
     </section>
 
-    <section id="contact" class="section">
+    <section id="contact" class="section contact-section">
         <h2 class="section-title">Contact</h2>
         
                 <div class="contact-content">
@@ -579,10 +618,10 @@
                 <a href="/about">About</a>
             </div>
                                                 <div class="social-links">
-                <a href="https://www.linkedin.com/in/yourprofile" target="_blank">in</a>
+                <a href="https://www.linkedin.com/in/andyhouldcroft" target="_blank">in</a>
                 <a href="https://orcid.org/0000-0001-9568-2259" target="_blank">id</a>
-                <a href="https://www.instagram.com/yourprofile" target="_blank">ig</a>
-                <a href="https://github.com/yourprofile" target="_blank">gh</a>
+                <a href="https://www.instagram.com/andyhouldcroft/" target="_blank">ig</a>
+                <a href="https://github.com/andyhouldcroft" target="_blank">gh</a>
             </div>
             </div>
         </div>

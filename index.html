@@ -72,10 +72,7 @@
             color: #a0a0a0;
         }
 
-        body.dark-mode .contact-content a {
-            color: #e0e0e0;
-            border-bottom: 1px solid #e0e0e0;
-        }
+        
 
         body.dark-mode footer {
             background: #0f0f0f;
@@ -171,51 +168,80 @@
         }
 
         .hero {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 0 2rem;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 120px 2rem 4rem 2rem;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(52, 168, 83, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(76, 175, 80, 0.25) 0%, transparent 50%),
+                linear-gradient(135deg, #e8f5e9 0%, #a5d6a7 50%, #81c784 100%);
         }
 
         .hero h1 {
-            font-size: 4rem;
+            font-size: 2.5rem;
             font-weight: 300;
-            margin-bottom: 1rem;
+            margin-bottom: 2.5rem;
             letter-spacing: -1px;
-        }
-
-        .hero .subtitle {
-            font-size: 1.5rem;
-            color: #666;
-            margin-bottom: 3rem;
-        }
-
-        .hero-images {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .hero-images .placeholder {
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            font-size: 0.9rem;
+            max-width: 580px;
+            line-height: 1.3;
         }
 
         .section {
             padding: 6rem 4rem;
             max-width: 1400px;
             margin: 0 auto;
+        }
+
+        .about-section {
+            padding-bottom: 2rem;
+        }
+
+        .about-with-image {
+            display: flex;
+            gap: 3rem;
+            align-items: flex-start;
+        }
+
+        .about-image {
+            width: 220px;
+            height: 220px;
+            flex-shrink: 0;
+            background: #e0e0e0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .about-image {
+            background: #2d2d2d;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .about-with-image {
+                flex-direction: column;
+            }
+
+            .about-image {
+                width: 100%;
+                max-width: 220px;
+            }
+        }
+
+        .cards-section {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .contact-section {
+            padding-top: 2rem;
         }
 
         .section-title {
@@ -225,10 +251,61 @@
         }
 
         .section-subtitle {
-            font-size: 1.2rem;
-            color: #666;
-            margin-bottom: 3rem;
+            font-size: 1.3rem;
+            color: #1a1a1a;
+            margin-bottom: 0;
             max-width: 800px;
+        }
+
+        .section-subtitle a {
+            color: #1a1a1a;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .section-subtitle a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 50%;
+            background-color: #1a1a1a;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        .section-subtitle a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        body.dark-mode .section-subtitle {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .section-subtitle a {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .section-subtitle a::after {
+            background-color: #e0e0e0;
+        }
+
+        .learn-more-btn {
+            display: inline-block;
+            color: #1a1a1a;
+            text-decoration: none;
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            transition: opacity 0.3s;
+        }
+
+        .learn-more-btn:hover {
+            opacity: 0.6;
+        }
+
+        body.dark-mode .learn-more-btn {
+            color: #e0e0e0;
         }
 
         .cards {
@@ -301,14 +378,35 @@
             margin-bottom: 1.5rem;
         }
 
-        .contact-content a {
+                        .contact-content a {
             color: #1a1a1a;
             text-decoration: none;
-            border-bottom: 1px solid #1a1a1a;
+            position: relative;
+            display: inline-block;
         }
 
-        .contact-content a:hover {
-            opacity: 0.6;
+        .contact-content a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 50%;
+            background-color: #1a1a1a;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        .contact-content a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        body.dark-mode .contact-content a {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .contact-content a::after {
+            background-color: #e0e0e0;
         }
 
         .social-icon {
@@ -344,14 +442,10 @@
             gap: 2rem;
         }
 
-        .footer-links a {
+                .footer-links a {
             color: #1a1a1a;
             text-decoration: none;
             font-size: 0.9rem;
-        }
-
-        .footer-links a:hover {
-            opacity: 0.6;
         }
 
         .social-links {
@@ -359,15 +453,11 @@
             gap: 1.5rem;
         }
 
-        .social-links a {
+                .social-links a {
             color: #1a1a1a;
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 300;
-        }
-
-        .social-links a:hover {
-            opacity: 0.6;
         }
 
         body.dark-mode .social-links a {
@@ -406,6 +496,7 @@
             }
         }
     </style>
+    <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 <body>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
@@ -480,21 +571,17 @@
     </nav>
 
     <section class="hero">
-        <h1>Andy Houldcroft</h1>
-        <p class="subtitle">Quantitative Ecologist</p>
-        <div class="hero-images">
-            <div class="placeholder">Hero Image 1</div>
-            <div class="placeholder">Hero Image 2</div>
-            <div class="placeholder">Hero Image 3</div>
+        <h1>Quantitative ecology for evidence based conservation</h1>
+    </section>
+
+    <section class="section about-section">
+        <div class="about-with-image">
+            <div class="placeholder about-image">Profile Image</div>
+            <p class="section-subtitle">Andy Houldcroft is a quantitative ecologist based in Cornwall. His research aims to develop and apply cutting-edge methods to monitor and conserve endangered species. He works as part of the <a href="https://cantanhezchimpanzeeproject.com/" target="_blank">Cantanhez Chimpanzee Project</a> and the <a href="https://www.exeter.ac.uk/research/centres/environmental-intelligence/" target="_blank">Centre for Environmental Intelligence</a> at the University of Exeter.</p>
         </div>
     </section>
 
-    <section class="section">
-        <h2 class="section-title">About Me</h2>
-        <p class="section-subtitle">[Write 2-3 paragraphs here giving an overview of yourself, your background, what drives your work, and what you're passionate about. This is your opportunity to introduce yourself to visitors in a personal and engaging way.]</p>
-    </section>
-
-    <section class="section">
+    <section class="section cards-section">
         <div class="cards">
             <a href="/research" class="card">
                 <div class="card-image">Research</div>
@@ -530,7 +617,7 @@
         </div>
     </section>
 
-    <section id="contact" class="section">
+    <section id="contact" class="section contact-section">
         <h2 class="section-title">Contact</h2>
         
         <div class="contact-content">
@@ -555,10 +642,10 @@
                 <a href="/about">About</a>
             </div>
             <div class="social-links">
-                <a href="https://www.linkedin.com/in/yourprofile" target="_blank">in</a>
+                <a href="https://www.linkedin.com/in/andyhouldcroft" target="_blank">in</a>
                 <a href="https://orcid.org/0000-0001-9568-2259" target="_blank">id</a>
-                <a href="https://www.instagram.com/yourprofile" target="_blank">ig</a>
-                <a href="https://github.com/yourprofile" target="_blank">gh</a>
+                <a href="https://www.instagram.com/andyhouldcroft/" target="_blank">ig</a>
+                <a href="https://github.com/andyhouldcroft" target="_blank">gh</a>
             </div>
         </div>
     </footer>
