@@ -260,23 +260,6 @@
         .section-subtitle a {
             color: #1a1a1a;
             text-decoration: none;
-            position: relative;
-        }
-
-        .section-subtitle a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1px;
-            bottom: -2px;
-            left: 50%;
-            background-color: #1a1a1a;
-            transition: width 0.3s ease, left 0.3s ease;
-        }
-
-        .section-subtitle a:hover::after {
-            width: 100%;
-            left: 0;
         }
 
         body.dark-mode .section-subtitle {
@@ -285,10 +268,6 @@
 
         body.dark-mode .section-subtitle a {
             color: #e0e0e0;
-        }
-
-        body.dark-mode .section-subtitle a::after {
-            background-color: #e0e0e0;
         }
 
         .learn-more-btn {
