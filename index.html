@@ -198,18 +198,22 @@
         .hero-image {
             position: absolute;
             overflow: hidden;
-            background: #e0e0e0;
         }
 
-        body.dark-mode .hero-image {
-            background: #2d2d2d;
-        }
-
-        .hero-image img {
+        .hero-image .placeholder {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            display: block;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .hero-image .placeholder {
+            background: #2d2d2d;
+            color: #666;
         }
 
         /* Image 1 - Top center-left (sunflowers) - behind text */
@@ -318,18 +322,16 @@
             flex-shrink: 0;
             background: #e0e0e0;
             border-radius: 0;
-            overflow: hidden;
-        }
-
-        .about-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.9rem;
         }
 
         body.dark-mode .about-image {
             background: #2d2d2d;
+            color: #666;
         }
 
         @media (max-width: 768px) {
@@ -421,18 +423,16 @@
             width: 100%;
             height: 250px;
             background: #e0e0e0;
-            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.9rem;
         }
 
         body.dark-mode .card-image {
             background: #2d2d2d;
-        }
-
-        .card-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
+            color: #666;
         }
 
         .card-content {
@@ -664,22 +664,20 @@
 
     <section class="hero">
         <div class="hero-image hero-image-1">
-            <img src="/images/hero-image-1.jpg" alt="">
+            <div class="placeholder">Image 1</div>
         </div>
         <div class="hero-image hero-image-2">
-            <img src="/images/hero-image-2.jpg" alt="">
+            <div class="placeholder">Image 2</div>
         </div>
         <div class="hero-image hero-image-3">
-            <img src="/images/hero-image-3.jpg" alt="">
+            <div class="placeholder">Image 3</div>
         </div>
         <h1>Quantitative ecology for evidence based conservation</h1>
     </section>
 
     <section class="section about-section">
         <div class="about-with-image">
-            <div class="about-image">
-                <img src="/images/profile.jpg" alt="">
-            </div>
+            <div class="placeholder about-image">Profile Image</div>
             <p class="section-subtitle">Andy Houldcroft is a quantitative ecologist based in Cornwall. His research aims to develop and apply cutting-edge methods to monitor and conserve endangered species. He works as part of the <a href="https://cantanhezchimpanzeeproject.com/" target="_blank">Cantanhez Chimpanzee Project</a> and the <a href="https://www.exeter.ac.uk/research/centres/environmental-intelligence/" target="_blank">Centre for Environmental Intelligence</a> at the University of Exeter.</p>
         </div>
     </section>
@@ -687,42 +685,30 @@
     <section class="section cards-section">
         <div class="cards">
             <a href="/research" class="card">
-                <div class="card-image">
-                    <img src="/images/card-research.jpg" alt="">
-                </div>
+                <div class="card-image">Research</div>
                 <div class="card-content">
                     <h3 class="card-title">Research <span class="card-arrow">→</span></h3>
-                    <p class="card-description">Explore my quantitative ecology projects and publications</p>
                 </div>
             </a>
 
             <a href="/photography" class="card">
-                <div class="card-image">
-                    <img src="/images/card-photography.jpg" alt="">
-                </div>
+                <div class="card-image">Photography</div>
                 <div class="card-content">
                     <h3 class="card-title">Photography <span class="card-arrow">→</span></h3>
-                    <p class="card-description">View my wildlife and nature photography collection</p>
                 </div>
             </a>
 
             <a href="/store" class="card">
-                <div class="card-image">
-                    <img src="/images/card-store.jpg" alt="">
-                </div>
+                <div class="card-image">Store</div>
                 <div class="card-content">
                     <h3 class="card-title">Store <span class="card-arrow">→</span></h3>
-                    <p class="card-description">Browse prints and products from my photography</p>
                 </div>
             </a>
 
             <a href="/about" class="card">
-                <div class="card-image">
-                    <img src="/images/card-about.jpg" alt="">
-                </div>
+                <div class="card-image">About</div>
                 <div class="card-content">
                     <h3 class="card-title">About <span class="card-arrow">→</span></h3>
-                    <p class="card-description">Learn more about my background and journey</p>
                 </div>
             </a>
         </div>
@@ -730,10 +716,8 @@
 
     <section id="contact" class="section contact-section">
         <h2 class="section-title">Contact</h2>
-        
         <div class="contact-content">
             <p><a href="mailto:A.Houldcroft@exeter.ac.uk">A.Houldcroft@exeter.ac.uk</a></p>
-            
             <p>Stella Turk Building<br>
             University of Exeter<br>
             Penryn Campus<br>
@@ -742,7 +726,6 @@
             TR10 9FE</p>
         </div>
     </section>
-
     <footer>
         <div class="footer-content">
             <div>© 2026 Andy Houldcroft</div>
