@@ -198,22 +198,18 @@
         .hero-image {
             position: absolute;
             overflow: hidden;
+            background: #e0e0e0;
         }
 
-        .hero-image .image-placeholder {
+        body.dark-mode .hero-image {
+            background: #2d2d2d;
+        }
+
+        .hero-image img {
             width: 100%;
             height: 100%;
-            background: #e0e0e0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-            font-size: 0.9rem;
-        }
-
-        body.dark-mode .hero-image .image-placeholder {
-            background: #2d2d2d;
-            color: #666;
+            object-fit: cover;
+            display: block;
         }
 
         /* Image 1 - Top center-left (sunflowers) - behind text */
@@ -322,16 +318,18 @@
             flex-shrink: 0;
             background: #e0e0e0;
             border-radius: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-            font-size: 0.9rem;
+            overflow: hidden;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         body.dark-mode .about-image {
             background: #2d2d2d;
-            color: #666;
         }
 
         @media (max-width: 768px) {
@@ -423,11 +421,18 @@
             width: 100%;
             height: 250px;
             background: #e0e0e0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-            font-size: 0.9rem;
+            overflow: hidden;
+        }
+
+        body.dark-mode .card-image {
+            background: #2d2d2d;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .card-content {
@@ -659,20 +664,22 @@
 
     <section class="hero">
         <div class="hero-image hero-image-1">
-            <div class="image-placeholder">Image 1</div>
+            <img src="/images/hero-image-1.jpg" alt="">
         </div>
         <div class="hero-image hero-image-2">
-            <div class="image-placeholder">Image 2</div>
+            <img src="/images/hero-image-2.jpg" alt="">
         </div>
         <div class="hero-image hero-image-3">
-            <div class="image-placeholder">Image 3</div>
+            <img src="/images/hero-image-3.jpg" alt="">
         </div>
         <h1>Quantitative ecology for evidence based conservation</h1>
     </section>
 
     <section class="section about-section">
         <div class="about-with-image">
-            <div class="placeholder about-image">Profile Image</div>
+            <div class="about-image">
+                <img src="/images/profile.jpg" alt="">
+            </div>
             <p class="section-subtitle">Andy Houldcroft is a quantitative ecologist based in Cornwall. His research aims to develop and apply cutting-edge methods to monitor and conserve endangered species. He works as part of the <a href="https://cantanhezchimpanzeeproject.com/" target="_blank">Cantanhez Chimpanzee Project</a> and the <a href="https://www.exeter.ac.uk/research/centres/environmental-intelligence/" target="_blank">Centre for Environmental Intelligence</a> at the University of Exeter.</p>
         </div>
     </section>
@@ -680,7 +687,9 @@
     <section class="section cards-section">
         <div class="cards">
             <a href="/research" class="card">
-                <div class="card-image">Research</div>
+                <div class="card-image">
+                    <img src="/images/card-research.jpg" alt="">
+                </div>
                 <div class="card-content">
                     <h3 class="card-title">Research <span class="card-arrow">→</span></h3>
                     <p class="card-description">Explore my quantitative ecology projects and publications</p>
@@ -688,7 +697,9 @@
             </a>
 
             <a href="/photography" class="card">
-                <div class="card-image">Photography</div>
+                <div class="card-image">
+                    <img src="/images/card-photography.jpg" alt="">
+                </div>
                 <div class="card-content">
                     <h3 class="card-title">Photography <span class="card-arrow">→</span></h3>
                     <p class="card-description">View my wildlife and nature photography collection</p>
@@ -696,7 +707,9 @@
             </a>
 
             <a href="/store" class="card">
-                <div class="card-image">Store</div>
+                <div class="card-image">
+                    <img src="/images/card-store.jpg" alt="">
+                </div>
                 <div class="card-content">
                     <h3 class="card-title">Store <span class="card-arrow">→</span></h3>
                     <p class="card-description">Browse prints and products from my photography</p>
@@ -704,7 +717,9 @@
             </a>
 
             <a href="/about" class="card">
-                <div class="card-image">About</div>
+                <div class="card-image">
+                    <img src="/images/card-about.jpg" alt="">
+                </div>
                 <div class="card-content">
                     <h3 class="card-title">About <span class="card-arrow">→</span></h3>
                     <p class="card-description">Learn more about my background and journey</p>
