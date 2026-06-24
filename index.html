@@ -45,15 +45,6 @@
             background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
         }
 
-        body.dark-mode .hero .subtitle {
-            color: #a0a0a0;
-        }
-
-        body.dark-mode .hero-images .placeholder {
-            background: rgba(255, 255, 255, 0.1);
-            color: #a0a0a0;
-        }
-
         body.dark-mode .card {
             background: #1a1a1a;
         }
@@ -66,7 +57,7 @@
         body.dark-mode .card-description {
             color: #a0a0a0;
         }
-        
+
         body.dark-mode footer { background: #0a0a0a; }
 
         body.dark-mode .footer-links a,
@@ -157,6 +148,99 @@
             left: 0;
         }
 
+        .nav-toggle {
+            display: none;
+            position: relative;
+            width: 20px;
+            height: 11px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .nav-toggle span {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 1.5px;
+            background-color: #1a1a1a;
+            transition: transform 0.3s ease, top 0.3s ease;
+        }
+
+        body.dark-mode .nav-toggle span {
+            background-color: #e0e0e0;
+        }
+
+        .nav-toggle span:nth-child(1) {
+            top: 0;
+        }
+
+        .nav-toggle span:nth-child(2) {
+            top: 9.5px;
+        }
+
+        .nav-toggle.active span:nth-child(1) {
+            top: 4.75px;
+            transform: rotate(45deg);
+        }
+
+        .nav-toggle.active span:nth-child(2) {
+            top: 4.75px;
+            transform: rotate(-45deg);
+        }
+
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: flex;
+            }
+
+            nav ul {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                gap: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            body.dark-mode nav ul {
+                background: rgba(10, 10, 10, 0.98);
+            }
+
+            nav ul.open {
+                max-height: 320px;
+            }
+
+            nav ul li {
+                width: 100%;
+                text-align: center;
+            }
+
+            nav ul li a {
+                display: block;
+                padding: 1.1rem 2rem;
+            }
+
+            nav ul li a::after {
+                display: none;
+            }
+
+            nav ul li:not(:last-child) {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            }
+
+            body.dark-mode nav ul li:not(:last-child) {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            }
+        }
+
         .hero {
             min-height: 100vh;
             display: flex;
@@ -192,22 +276,6 @@
         .hero-image {
             position: absolute;
             overflow: hidden;
-        }
-
-        .hero-image .placeholder {
-            width: 100%;
-            height: 100%;
-            background: #e0e0e0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-            font-size: 0.9rem;
-        }
-
-        body.dark-mode .hero-image .placeholder {
-            background: #2d2d2d;
-            color: #666;
         }
 
         /* Image 1 - Top center-left */
@@ -261,36 +329,89 @@
             }
         }
 
-        /* Mobile view - stack images vertically below text */
+        /* Mobile view - same staggered layout, scaled down, text above images */
         @media (max-width: 768px) {
             .hero {
                 min-height: auto;
+                height: 520px;
                 padding: 100px 1rem 2rem 1rem;
+                justify-content: flex-start;
             }
 
             .hero h1 {
-                font-size: 2rem;
-                margin-bottom: 3rem;
-                position: static;
-            }
-
-            .hero-image {
-                position: static;
-                width: 100%;
-                max-width: 400px;
-                margin: 1rem auto;
+                font-size: 1.9rem;
+                margin-bottom: 0;
             }
 
             .hero-image-1 {
-                height: 250px;
+                width: 175px;
+                height: 110px;
+                top: auto;
+                bottom: 140px;
+                left: 13%;
             }
 
             .hero-image-2 {
-                height: 250px;
+                width: 205px;
+                height: 130px;
+                bottom: 40px;
+                left: 5%;
             }
 
             .hero-image-3 {
-                height: 300px;
+                width: 195px;
+                height: 145px;
+                top: auto;
+                bottom: 90px;
+                right: 5%;
+            }
+
+            nav {
+                padding: 1rem 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                height: 460px;
+                padding: 90px 1.25rem 1.5rem 1.25rem;
+            }
+
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+
+            .hero-image-1 {
+                width: 140px;
+                height: 90px;
+                bottom: 115px;
+                left: 10%;
+            }
+
+            .hero-image-2 {
+                width: 165px;
+                height: 105px;
+                bottom: 30px;
+                left: 2%;
+            }
+
+            .hero-image-3 {
+                width: 155px;
+                height: 115px;
+                bottom: 70px;
+                right: 2%;
+            }
+
+            nav {
+                padding: 1rem 1.25rem;
+            }
+
+            nav .logo {
+                font-size: 1rem;
+            }
+
+            nav a {
+                font-size: 0.95rem;
             }
         }
 
@@ -356,7 +477,7 @@
         }
 
         .section-subtitle {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #1a1a1a;
             margin-bottom: 0;
             max-width: 800px;
@@ -423,7 +544,6 @@
             justify-content: center;
             color: #999;
             font-size: 0.9rem;
-            object-fit: cover;
         }
 
         body.dark-mode .card-image {
@@ -436,7 +556,7 @@
         }
 
         .card-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 300;
             margin-bottom: 0.5rem;
             display: flex;
@@ -468,7 +588,7 @@
             margin-bottom: 1.5rem;
         }
 
-                        .contact-content a {
+        .contact-content a {
             color: #1a1a1a;
             text-decoration: none;
             position: relative;
@@ -530,7 +650,7 @@
             gap: 2rem;
         }
 
-                .footer-links a {
+        .footer-links a {
             color: #1a1a1a;
             text-decoration: none;
             font-size: 0.9rem;
@@ -541,7 +661,7 @@
             gap: 1.5rem;
         }
 
-                .social-links a {
+        .social-links a {
             color: #1a1a1a;
             text-decoration: none;
             font-size: 0.9rem;
@@ -553,28 +673,24 @@
         }
 
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
             .cards {
                 grid-template-columns: 1fr;
             }
 
-            .hero-images {
-                flex-direction: column;
-            }
-
-            nav {
-                padding: 1rem 2rem;
-            }
-
-            nav ul {
-                gap: 1.5rem;
-            }
-
             .section {
                 padding: 4rem 2rem;
+            }
+
+            .section-title {
+                font-size: 1.9rem;
+            }
+
+            .section-subtitle {
+                font-size: 1.15rem;
+            }
+
+            .card-title {
+                font-size: 1.2rem;
             }
 
             .footer-content {
@@ -583,15 +699,50 @@
                 text-align: center;
             }
         }
+
+        @media (max-width: 480px) {
+            .section {
+                padding: 3rem 1.25rem;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .section-subtitle {
+                font-size: 1.05rem;
+            }
+
+            .card-content {
+                padding: 1.5rem;
+            }
+
+            .card-title {
+                font-size: 1.1rem;
+            }
+
+            .contact-content {
+                font-size: 1rem;
+            }
+
+            .footer-content,
+            .footer-links a,
+            .social-links a {
+                font-size: 0.85rem;
+            }
+
+            footer {
+                padding: 2rem 1.25rem;
+            }
+        }
     </style>
+
     <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 <body>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
         <svg viewBox="0 0 32 32" fill="none">
-            <!-- Center circle (hollow) -->
             <circle cx="16" cy="16" r="5" stroke="#1a1a1a" stroke-width="1.5" fill="none" class="theme-center"/>
-            <!-- Light rays (8 dashes around the circle) -->
             <g class="theme-rays" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round">
                 <line x1="16" y1="5" x2="16" y2="8"/>
                 <line x1="16" y1="24" x2="16" y2="27"/>
@@ -649,7 +800,11 @@
     <nav>
         <div class="nav-content">
             <a href="/" class="logo">Andy Houldcroft</a>
-            <ul>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+            </button>
+            <ul id="navMenu">
                 <li><a href="/research">Research</a></li>
                 <li><a href="/photography">Photography</a></li>
                 <li><a href="/store">Store</a></li>
@@ -658,22 +813,41 @@
         </div>
     </nav>
 
+    <script>
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        navToggle.addEventListener('click', () => {
+            const isOpen = navMenu.classList.toggle('open');
+            navToggle.classList.toggle('active', isOpen);
+            navToggle.setAttribute('aria-expanded', isOpen);
+        });
+
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('open');
+                navToggle.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+    </script>
+
     <section class="hero">
+        <h1>Quantitative ecology for human-wildlife coexistence</h1>
         <div class="hero-image hero-image-1">
-            <img src="images/home/hero1.jpg" alt="Hero image 1" style="width: 100%; height: 100%; object-fit: cover;">
+            <img src="images/home/hero1-900.webp" srcset="images/home/hero1-600.webp 600w, images/home/hero1-900.webp 900w, images/home/hero1-1200.webp 1200w" sizes="430px" width="430" height="320" alt="Black kite taking flight" style="width: 100%; height: 100%; object-fit: cover;" fetchpriority="high">
         </div>
         <div class="hero-image hero-image-2">
-            <img src="images/home/hero2.jpg" alt="Hero image 2" style="width: 100%; height: 100%; object-fit: cover;">
+            <img src="images/home/hero2-900.webp" srcset="images/home/hero2-600.webp 600w, images/home/hero2-900.webp 900w, images/home/hero2-1200.webp 1200w" sizes="430px" width="430" height="320" alt="Field research scene" style="width: 100%; height: 100%; object-fit: cover;" fetchpriority="high">
         </div>
         <div class="hero-image hero-image-3">
-            <img src="images/home/hero3.jpg" alt="Hero image 3" style="width: 100%; height: 100%; object-fit: cover;">
+            <img src="images/home/hero3-900.webp" srcset="images/home/hero3-600.webp 600w, images/home/hero3-900.webp 900w, images/home/hero3-1200.webp 1200w" sizes="430px" width="430" height="320" alt="Wildlife monitoring fieldwork" style="width: 100%; height: 100%; object-fit: cover;" fetchpriority="high">
         </div>
-        <h1>Quantitative ecology for human-wildlife coexistence</h1>
     </section>
 
     <section class="section about-section">
         <div class="about-with-image">
-            <img src="images/home/profile.jpg" alt="Andy Houldcroft" class="about-image">
+            <img src="images/home/profile-560.webp" srcset="images/home/profile-280.webp 280w, images/home/profile-560.webp 560w, images/home/profile-840.webp 840w" sizes="280px" width="280" height="280" alt="Andy Houldcroft" class="about-image" loading="lazy">
             <p class="section-subtitle">Andy Houldcroft is a quantitative ecologist based in Cornwall. His research aims to develop and apply cutting-edge methods to monitor and conserve endangered species. He works as part of the <a href="https://cantanhezchimpanzeeproject.com/" target="_blank">Cantanhez Chimpanzee Project</a> and the <a href="https://www.exeter.ac.uk/research/centres/environmental-intelligence/" target="_blank">Centre for Environmental Intelligence</a> at the University of Exeter.</p>
         </div>
     </section>
@@ -681,28 +855,28 @@
     <section class="section cards-section">
         <div class="cards">
             <a href="/research" class="card">
-                <img src="images/home/research.jpg" alt="Research" class="card-image">
+                <div class="card-image">Research</div>
                 <div class="card-content">
                     <h3 class="card-title">Research <span class="card-arrow">→</span></h3>
                 </div>
             </a>
 
             <a href="/photography" class="card">
-                <img src="images/home/photography.jpg" alt="Photography" class="card-image">
+                <div class="card-image">Photography</div>
                 <div class="card-content">
                     <h3 class="card-title">Photography <span class="card-arrow">→</span></h3>
                 </div>
             </a>
 
             <a href="/store" class="card">
-                <img src="images/home/store.jpg" alt="Store" class="card-image">
+                <div class="card-image">Store</div>
                 <div class="card-content">
                     <h3 class="card-title">Store <span class="card-arrow">→</span></h3>
                 </div>
             </a>
 
             <a href="/about" class="card">
-                <img src="images/home/about.jpg" alt="About" class="card-image">
+                <div class="card-image">About</div>
                 <div class="card-content">
                     <h3 class="card-title">About <span class="card-arrow">→</span></h3>
                 </div>
@@ -714,7 +888,7 @@
         <h2 class="section-title">Contact</h2>
         <div class="contact-content">
             <p><a href="mailto:A.Houldcroft@exeter.ac.uk">A.Houldcroft@exeter.ac.uk</a></p>
-            <p>Stella Turk Building<br>
+            <p>Environmental Sustainability Institute<br>
             University of Exeter<br>
             Penryn Campus<br>
             Treliever Road<br>

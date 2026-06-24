@@ -19,10 +19,10 @@
         body.dark-mode nav .logo, body.dark-mode nav a { color: #e0e0e0; }
         body.dark-mode nav a::after { background-color: #e0e0e0; }
         body.dark-mode .coming-soon { color: #a0a0a0; }
-        
+
         body.dark-mode footer { background: #0a0a0a; }
         body.dark-mode .footer-links a, body.dark-mode .social-links a { color: #e0e0e0; }
-                .theme-toggle {
+        .theme-toggle {
             position: fixed;
             bottom: 2rem;
             right: 2rem;
@@ -61,6 +61,98 @@
             background-color: #1a1a1a; transition: width 0.3s ease, left 0.3s ease;
         }
         nav a:hover::after { width: 100%; left: 0; }
+        .nav-toggle {
+            display: none;
+            position: relative;
+            width: 20px;
+            height: 11px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .nav-toggle span {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 1.5px;
+            background-color: #1a1a1a;
+            transition: transform 0.3s ease, top 0.3s ease;
+        }
+
+        body.dark-mode .nav-toggle span {
+            background-color: #e0e0e0;
+        }
+
+        .nav-toggle span:nth-child(1) {
+            top: 0;
+        }
+
+        .nav-toggle span:nth-child(2) {
+            top: 9.5px;
+        }
+
+        .nav-toggle.active span:nth-child(1) {
+            top: 4.75px;
+            transform: rotate(45deg);
+        }
+
+        .nav-toggle.active span:nth-child(2) {
+            top: 4.75px;
+            transform: rotate(-45deg);
+        }
+
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: flex;
+            }
+
+            nav ul {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                gap: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            body.dark-mode nav ul {
+                background: rgba(10, 10, 10, 0.98);
+            }
+
+            nav ul.open {
+                max-height: 320px;
+            }
+
+            nav ul li {
+                width: 100%;
+                text-align: center;
+            }
+
+            nav ul li a {
+                display: block;
+                padding: 1.1rem 2rem;
+            }
+
+            nav ul li a::after {
+                display: none;
+            }
+
+            nav ul li:not(:last-child) {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            }
+
+            body.dark-mode nav ul li:not(:last-child) {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            }
+        }
         .section {
             padding: 6rem 4rem;
             max-width: 1000px;
@@ -81,7 +173,7 @@
         }
         .contact-content { max-width: 600px; font-size: 1.1rem; line-height: 1.6; }
         .contact-content p { margin-bottom: 1.5rem; }
-                        .contact-content a {
+        .contact-content a {
             color: #1a1a1a;
             text-decoration: none;
             position: relative;
@@ -120,17 +212,17 @@
             align-items: center; font-size: 0.9rem;
         }
         .footer-links { display: flex; gap: 2rem; }
-                .footer-links a {
+        .footer-links a {
             color: #1a1a1a;
             text-decoration: none;
             font-size: 0.9rem;
         }
-                .social-links {
+        .social-links {
             display: flex;
             gap: 1.5rem;
         }
 
-                .social-links a {
+        .social-links a {
             color: #1a1a1a;
             text-decoration: none;
             font-size: 0.9rem;
@@ -138,19 +230,29 @@
         }
         @media (max-width: 768px) {
             nav { padding: 1rem 2rem; }
-            nav ul { gap: 1.5rem; }
             .section { padding: 4rem 2rem; }
+            .section-title { font-size: 1.9rem; }
+            .coming-soon { font-size: 1.3rem; padding: 5rem 0; }
             .footer-content { flex-direction: column; gap: 2rem; text-align: center; }
+        }
+        @media (max-width: 480px) {
+            nav { padding: 1rem 1.25rem; }
+            nav .logo { font-size: 1rem; }
+            nav a { font-size: 0.95rem; }
+            .section { padding: 3rem 1.25rem; }
+            .section-title { font-size: 1.6rem; }
+            .coming-soon { font-size: 1.15rem; padding: 4rem 0; }
+            .contact-content { font-size: 1rem; }
+            .footer-content, .footer-links a, .social-links a { font-size: 0.85rem; }
+            footer { padding: 2rem 1.25rem; }
         }
     </style>
     <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 <body>
-                            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
         <svg viewBox="0 0 32 32" fill="none">
-            <!-- Center circle (hollow) -->
             <circle cx="16" cy="16" r="5" stroke="#1a1a1a" stroke-width="1.5" fill="none" class="theme-center"/>
-            <!-- Light rays (8 dashes around the circle) -->
             <g class="theme-rays" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round">
                 <line x1="16" y1="5" x2="16" y2="8"/>
                 <line x1="16" y1="24" x2="16" y2="27"/>
@@ -195,7 +297,11 @@
     <nav>
         <div class="nav-content">
             <a href="/" class="logo">Andy Houldcroft</a>
-            <ul>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+            </button>
+            <ul id="navMenu">
                 <li><a href="/research">Research</a></li>
                 <li><a href="/photography">Photography</a></li>
                 <li><a href="/store">Store</a></li>
@@ -203,6 +309,25 @@
             </ul>
         </div>
     </nav>
+
+    <script>
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        navToggle.addEventListener('click', () => {
+            const isOpen = navMenu.classList.toggle('open');
+            navToggle.classList.toggle('active', isOpen);
+            navToggle.setAttribute('aria-expanded', isOpen);
+        });
+
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('open');
+                navToggle.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+    </script>
     <section class="section cards-section">
         <h2 class="section-title">Store</h2>
         <div class="coming-soon">Under construction</div>
@@ -210,11 +335,11 @@
 
     <section id="contact" class="section contact-section">
         <h2 class="section-title">Contact</h2>
-        
+
         <div class="contact-content">
             <p><a href="mailto:A.Houldcroft@exeter.ac.uk">A.Houldcroft@exeter.ac.uk</a></p>
-            
-            <p>Stella Turk Building<br>
+
+            <p>Environmental Sustainability Institute<br>
             University of Exeter<br>
             Penryn Campus<br>
             Treliever Road<br>
