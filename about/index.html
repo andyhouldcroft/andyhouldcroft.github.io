@@ -172,7 +172,7 @@
         .about-content p { margin-bottom: 2rem; }
         .about-content h3 { font-size: 1.8rem; font-weight: 300; margin-top: 4rem; margin-bottom: 1.5rem; }
         .image-placeholder {
-            width: 100%; max-width: 600px; height: 400px; background: #e0e0e0;
+            width: 100%; max-width: 320px; height: 420px; background: #e0e0e0;
             border-radius: 0; margin: 2rem 0; display: flex; align-items: center;
             justify-content: center; color: #999; font-size: 0.9rem;
         }
@@ -220,7 +220,7 @@
             max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between;
             align-items: center; font-size: 0.9rem;
         }
-        .footer-links { display: flex; gap: 2rem; }
+        .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem 2rem; }
         .footer-links a {
             color: #1a1a1a;
             text-decoration: none;
@@ -242,6 +242,7 @@
             .section { padding: 4rem 2rem; }
             .section-title { font-size: 1.9rem; }
             .about-content { font-size: 1.05rem; }
+            .image-placeholder { max-width: 240px; height: 320px; }
             .image-grid { grid-template-columns: 1fr; }
             .footer-content { flex-direction: column; gap: 2rem; text-align: center; }
         }
@@ -253,7 +254,7 @@
             .section-title { font-size: 1.6rem; }
             .about-content { font-size: 1rem; }
             .about-content h3 { font-size: 1.4rem; margin-top: 3rem; }
-            .image-placeholder { height: 280px; }
+            .image-placeholder { max-width: 200px; height: 267px; }
             .contact-content { font-size: 1rem; }
             .footer-content, .footer-links a, .social-links a { font-size: 0.85rem; }
             footer { padding: 2rem 1.25rem; }
@@ -315,6 +316,7 @@
             </button>
             <ul id="navMenu">
                 <li><a href="/research">Research</a></li>
+                <li><a href="/code">Code</a></li>
                 <li><a href="/photography">Photography</a></li>
                 <li><a href="/store">Store</a></li>
                 <li><a href="/about">About</a></li>
@@ -343,7 +345,7 @@
     <section class="section cards-section">
         <h2 class="section-title">About</h2>
         <div class="about-content">
-            <img src="/images/home/profile-about-600.webp" srcset="/images/home/profile-about-600.webp 600w, /images/home/profile-about-1200.webp 1200w" sizes="(max-width: 768px) 100vw, 600px" width="600" height="400" alt="Andy Houldcroft" class="image-placeholder" style="object-fit: cover;" loading="lazy">
+            <img src="/images/home/profile-portrait-320.webp" srcset="/images/home/profile-portrait-320.webp 320w, /images/home/profile-portrait-640.webp 640w" sizes="(max-width: 768px) 100vw, 320px" width="320" height="420" alt="Andy Houldcroft" class="image-placeholder" style="object-fit: cover;" loading="lazy">
 
             <p>Andy Houldcroft is a quantitative ecologist and conservation scientist working at the interface between conservation, technology and data science. His research seeks to develop and apply novel methods to monitor threatened species, answer pressing ecological questions, and promote evidence-based conservation action.</p>
 
@@ -377,6 +379,7 @@
             <div>© 2026 Andy Houldcroft</div>
             <div class="footer-links">
                 <a href="/research">Research</a>
+                <a href="/code">Code</a>
                 <a href="/photography">Photography</a>
                 <a href="/store">Store</a>
                 <a href="/about">About</a>

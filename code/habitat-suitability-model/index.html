@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data fusion for great ape population monitoring — Andy Houldcroft</title>
+    <title>Fitting a simple habitat suitability model — Andy Houldcroft</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -31,7 +31,7 @@
 
         body.dark-mode nav {
             background: rgba(10, 10, 10, 0.95);
-            }
+        }
 
         body.dark-mode nav .logo,
         body.dark-mode nav a {
@@ -44,11 +44,6 @@
 
         body.dark-mode .back-link {
             color: #e0e0e0;
-        }
-
-        body.dark-mode .project-image {
-            background: #2d2d2d;
-            color: #666;
         }
 
         body.dark-mode footer { background: #0a0a0a; }
@@ -94,7 +89,7 @@
             backdrop-filter: blur(10px);
             padding: 1.5rem 4rem;
             z-index: 1000;
-            }
+        }
 
         nav .nav-content {
             display: flex;
@@ -140,6 +135,7 @@
             width: 100%;
             left: 0;
         }
+
         .nav-toggle {
             display: none;
             position: relative;
@@ -238,14 +234,6 @@
             max-width: 1000px;
             margin: 0 auto;
         }
-        .cards-section {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-        }
-
-        .contact-section {
-            padding-top: 2rem;
-        }
 
         .back-link {
             display: inline-flex;
@@ -269,18 +257,6 @@
             line-height: 1.2;
         }
 
-        .project-image {
-            width: 100%;
-            height: 400px;
-            background: #e0e0e0;
-            border-radius: 0;
-            margin-bottom: 3rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-        }
-
         .project-content {
             font-size: 1.1rem;
             line-height: 1.8;
@@ -293,12 +269,92 @@
             margin-bottom: 1rem;
         }
 
+        .project-content h3 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
         .project-content p {
             margin-bottom: 1.5rem;
         }
 
-        footer { background: #fff; padding: 3rem 4rem;
+        /* --- Code & output blocks (vignette-specific additions, same idiom as the rest of the page) --- */
+
+        .project-content pre {
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 1.25rem 1.5rem;
+            overflow-x: auto;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
         }
+
+        body.dark-mode .project-content pre {
+            background: #161616;
+            border-color: #2d2d2d;
+        }
+
+        .project-content code {
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+            font-size: 0.9em;
+        }
+
+        .project-content p code {
+            background: #f5f5f5;
+            padding: 0.15em 0.4em;
+            border-radius: 3px;
+        }
+
+        body.dark-mode .project-content p code {
+            background: #161616;
+        }
+
+        .project-content pre.output {
+            color: #555;
+        }
+
+        body.dark-mode .project-content pre.output {
+            color: #999;
+        }
+
+        .code-keyword { color: #8959a8; }
+        .code-number { color: #f5871f; }
+
+        body.dark-mode .code-keyword { color: #b58bd6; }
+        body.dark-mode .code-number { color: #f7a25c; }
+
+        .project-content figure {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .project-content figure img,
+        .project-content figure svg {
+            max-width: 100%;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+
+        body.dark-mode .project-content figure img,
+        body.dark-mode .project-content figure svg {
+            border-color: #2d2d2d;
+        }
+
+        .project-content figcaption {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.75rem;
+        }
+
+        body.dark-mode .project-content figcaption {
+            color: #999;
+        }
+
+        footer { background: #fff; padding: 3rem 4rem; }
 
         .footer-content {
             max-width: 1400px;
@@ -351,16 +407,17 @@
                 font-size: 1.9rem;
             }
 
-            .project-image {
-                height: 260px;
-            }
-
             .project-content {
                 font-size: 1.05rem;
             }
 
             .project-content h2 {
                 font-size: 1.6rem;
+            }
+
+            .project-content pre {
+                font-size: 0.84rem;
+                padding: 1rem 1.1rem;
             }
 
             .footer-content {
@@ -389,11 +446,6 @@
 
             .project-title {
                 font-size: 1.6rem;
-            }
-
-            .project-image {
-                height: 200px;
-                margin-bottom: 2rem;
             }
 
             .project-content {
@@ -513,23 +565,77 @@
     </script>
 
     <section class="section">
-        <a href="/research" class="back-link">← Back to Research</a>
+        <a href="/code" class="back-link">← Back to Code</a>
 
-        <h1 class="project-title">Data fusion for great ape population monitoring</h1>
-
-        <div class="project-image">Project Image</div>
+        <h1 class="project-title">Fitting a simple habitat suitability model</h1>
 
         <div class="project-content">
-            <p>Full project details are coming soon. In the meantime, feel free to get in touch below if you would like to discuss this work.</p>
+            <h2>Overview</h2>
+            <p>This is a short example vignette demonstrating how code, output, and figures can be embedded directly into a research page. Here, we simulate a simple presence/absence dataset and fit a logistic regression to estimate habitat suitability as a function of forest cover.</p>
+            <p>This is placeholder content to demonstrate the format — swap in real data and analysis for an actual project write-up.</p>
 
-            <h2>Background</h2>
-            <p>Project write-up in progress.</p>
+            <h2>Simulating example data</h2>
+            <pre><code>set.seed(<span class="code-number">42</span>)
+n &lt;- <span class="code-number">200</span>
+forest_cover &lt;- runif(n, <span class="code-number">0</span>, <span class="code-number">1</span>)
+linear_pred &lt;- <span class="code-number">-2</span> + <span class="code-number">5</span> * forest_cover
+prob_presence &lt;- <span class="code-number">1</span> / (<span class="code-number">1</span> + exp(-linear_pred))
+presence &lt;- rbinom(n, <span class="code-number">1</span>, prob_presence)
 
-            <h2>Methods</h2>
-            <p>Project write-up in progress.</p>
+data &lt;- data.frame(forest_cover, presence)
+head(data)</code></pre>
 
-            <h2>Current Status</h2>
-            <p>Ongoing. Further updates to follow.</p>
+            <pre class="output">  forest_cover presence
+1    0.9148060        1
+2    0.9370754        1
+3    0.2861395        0
+4    0.8304476        1
+5    0.6417455        1
+6    0.5190959        1</pre>
+
+            <h2>Fitting the model</h2>
+            <pre><code>model &lt;- glm(presence ~ forest_cover, data = data, family = binomial)
+summary(model)</code></pre>
+
+            <pre class="output">Call:
+glm(formula = presence ~ forest_cover, family = binomial, data = data)
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)
+(Intercept)   -2.0954     0.3403  -6.158 7.36e-10 ***
+forest_cover   5.3781     0.6708   8.017 1.08e-15 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 273.93  on 199  degrees of freedom
+Residual deviance: 173.92  on 198  degrees of freedom
+AIC: 177.92</pre>
+
+            <h2>Visualising the relationship</h2>
+            <figure>
+                <svg viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg" style="background:transparent;">
+                    <line x1="60" y1="330" x2="560" y2="330" stroke="currentColor" stroke-opacity="0.3" stroke-width="1"/>
+                    <line x1="60" y1="40" x2="60" y2="330" stroke="currentColor" stroke-opacity="0.3" stroke-width="1"/>
+                    <path d="M 60,322 C 200,316 280,235 320,165 C 380,75 450,48 560,42" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <g fill="currentColor" opacity="0.45">
+                        <circle cx="95" cy="326" r="3"/><circle cx="120" cy="190" r="3"/><circle cx="150" cy="322" r="3"/>
+                        <circle cx="180" cy="70" r="3"/><circle cx="210" cy="322" r="3"/><circle cx="240" cy="80" r="3"/>
+                        <circle cx="270" cy="318" r="3"/><circle cx="300" cy="75" r="3"/><circle cx="330" cy="326" r="3"/>
+                        <circle cx="360" cy="65" r="3"/><circle cx="390" cy="322" r="3"/><circle cx="420" cy="60" r="3"/>
+                        <circle cx="450" cy="55" r="3"/><circle cx="480" cy="322" r="3"/><circle cx="510" cy="50" r="3"/>
+                        <circle cx="540" cy="45" r="3"/>
+                    </g>
+                    <text x="60" y="350" font-family="Inter, sans-serif" font-size="12" fill="currentColor" opacity="0.6">0.0</text>
+                    <text x="540" y="350" font-family="Inter, sans-serif" font-size="12" fill="currentColor" opacity="0.6">1.0</text>
+                    <text x="310" y="372" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="currentColor" opacity="0.6">Forest cover (proportion)</text>
+                </svg>
+                <figcaption>Fig 1. Logistic regression fit of presence probability against forest cover (illustrative).</figcaption>
+            </figure>
+
+            <h2>Interpretation</h2>
+            <p>The fitted model suggests presence probability increases with forest cover, consistent with expectations for forest-dependent species. In a real write-up, this section would discuss model diagnostics, validation, and ecological interpretation in more depth.</p>
 
             <h2>Related Publications</h2>
             <p>Forthcoming.</p>

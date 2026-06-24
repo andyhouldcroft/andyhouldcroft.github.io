@@ -286,6 +286,25 @@
             max-width: 800px;
         }
 
+        .section-subtitle a {
+            color: #1a1a1a;
+            text-decoration: none;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .section-subtitle a:hover {
+            border-bottom-color: #1a1a1a;
+        }
+
+        body.dark-mode .section-subtitle a {
+            color: #e0e0e0;
+            border-bottom-color: #2d2d2d;
+        }
+
+        body.dark-mode .section-subtitle a:hover {
+            border-bottom-color: #e0e0e0;
+        }
+
         .cards {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -478,7 +497,9 @@
 
         .footer-links {
             display: flex;
-            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem 2rem;
         }
 
         .footer-links a {
@@ -665,6 +686,7 @@
             </button>
             <ul id="navMenu">
                 <li><a href="/research">Research</a></li>
+                <li><a href="/code">Code</a></li>
                 <li><a href="/photography">Photography</a></li>
                 <li><a href="/store">Store</a></li>
                 <li><a href="/about">About</a></li>
@@ -762,6 +784,21 @@
         </div>
     </section>
 
+    <section id="code" class="section cards-section">
+        <h2 class="section-title">Code</h2>
+        <p class="section-subtitle">Worked examples and code vignettes accompanying this research. <a href="/code">View all →</a></p>
+
+        <div class="publications-list">
+            <div class="publication-item">
+                <div class="pub-content">
+                    <div class="pub-title">Fitting a simple habitat suitability model</div>
+                    <div class="pub-authors">A short worked example demonstrating data simulation, model fitting, and visualisation in R.</div>
+                    <a href="/code/habitat-suitability-model" class="pub-link">View vignette →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="contact" class="section contact-section">
         <h2 class="section-title">Contact</h2>
 
@@ -782,6 +819,7 @@
             <div>© 2026 Andy Houldcroft</div>
             <div class="footer-links">
                 <a href="/research">Research</a>
+                <a href="/code">Code</a>
                 <a href="/photography">Photography</a>
                 <a href="/store">Store</a>
                 <a href="/about">About</a>
