@@ -139,8 +139,8 @@
         .nav-toggle {
             display: none;
             position: relative;
-            width: 20px;
-            height: 11px;
+            width: 18px;
+            height: 8px;
             background: transparent;
             border: none;
             cursor: pointer;
@@ -152,7 +152,7 @@
             position: absolute;
             left: 0;
             width: 100%;
-            height: 1.5px;
+            height: 1px;
             background-color: #1a1a1a;
             transition: transform 0.3s ease, top 0.3s ease;
         }
@@ -166,16 +166,16 @@
         }
 
         .nav-toggle span:nth-child(2) {
-            top: 9.5px;
+            top: 7px;
         }
 
         .nav-toggle.active span:nth-child(1) {
-            top: 4.75px;
+            top: 3px;
             transform: rotate(45deg);
         }
 
         .nav-toggle.active span:nth-child(2) {
-            top: 4.75px;
+            top: 3px;
             transform: rotate(-45deg);
         }
 
@@ -280,8 +280,6 @@
             margin-bottom: 1.5rem;
         }
 
-        /* --- Code & output blocks (vignette-specific additions, same idiom as the rest of the page) --- */
-
         .project-content pre {
             background: #f5f5f5;
             border: 1px solid #e0e0e0;
@@ -321,11 +319,11 @@
             color: #999;
         }
 
-        .code-keyword { color: #8959a8; }
-        .code-number { color: #f5871f; }
+        .code-keyword { color: #8250df; }
+        .code-number { color: #0550ae; }
 
-        body.dark-mode .code-keyword { color: #b58bd6; }
-        body.dark-mode .code-number { color: #f7a25c; }
+        body.dark-mode .code-keyword { color: #d2a8ff; }
+        body.dark-mode .code-number { color: #79c0ff; }
 
         .project-content figure {
             margin: 2rem 0;
@@ -351,7 +349,7 @@
         }
 
         body.dark-mode .project-content figcaption {
-            color: #999;
+            color: #a0a0a0;
         }
 
         footer { background: #fff; padding: 3rem 4rem; }
@@ -575,15 +573,15 @@
             <p>This is placeholder content to demonstrate the format — swap in real data and analysis for an actual project write-up.</p>
 
             <h2>Simulating example data</h2>
-            <pre><code>set.seed(<span class="code-number">42</span>)
+            <pre><code><span class="code-keyword">set.seed</span>(<span class="code-number">42</span>)
 n &lt;- <span class="code-number">200</span>
-forest_cover &lt;- runif(n, <span class="code-number">0</span>, <span class="code-number">1</span>)
+forest_cover &lt;- <span class="code-keyword">runif</span>(n, <span class="code-number">0</span>, <span class="code-number">1</span>)
 linear_pred &lt;- <span class="code-number">-2</span> + <span class="code-number">5</span> * forest_cover
-prob_presence &lt;- <span class="code-number">1</span> / (<span class="code-number">1</span> + exp(-linear_pred))
-presence &lt;- rbinom(n, <span class="code-number">1</span>, prob_presence)
+prob_presence &lt;- <span class="code-number">1</span> / (<span class="code-number">1</span> + <span class="code-keyword">exp</span>(-linear_pred))
+presence &lt;- <span class="code-keyword">rbinom</span>(n, <span class="code-number">1</span>, prob_presence)
 
-data &lt;- data.frame(forest_cover, presence)
-head(data)</code></pre>
+data &lt;- <span class="code-keyword">data.frame</span>(forest_cover, presence)
+<span class="code-keyword">head</span>(data)</code></pre>
 
             <pre class="output">  forest_cover presence
 1    0.9148060        1
@@ -594,8 +592,8 @@ head(data)</code></pre>
 6    0.5190959        1</pre>
 
             <h2>Fitting the model</h2>
-            <pre><code>model &lt;- glm(presence ~ forest_cover, data = data, family = binomial)
-summary(model)</code></pre>
+            <pre><code>model &lt;- <span class="code-keyword">glm</span>(presence ~ forest_cover, data = data, family = binomial)
+<span class="code-keyword">summary</span>(model)</code></pre>
 
             <pre class="output">Call:
 glm(formula = presence ~ forest_cover, family = binomial, data = data)
