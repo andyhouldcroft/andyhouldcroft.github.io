@@ -281,7 +281,6 @@
         @media (max-width: 768px) {
             .hero {
                 min-height: 100vh;
-                min-height: 100dvh;
                 height: auto;
                 padding: 70px 1rem 2rem 1rem;
                 justify-content: center;
@@ -707,7 +706,7 @@
     <section class="hero">
         <canvas class="hero-canvas" id="trapCanvas" aria-hidden="true"></canvas>
         <canvas class="hero-canvas" id="walkerCanvas" aria-hidden="true"></canvas>
-        <h1>Quantitative ecology for human-wildlife coexistence</h1>
+        <h1>Quantitative methods for evidence-based conservation</h1>
     </section>
 
     <script>
@@ -755,6 +754,16 @@
             const WAVE_MAX_RADIUS = 70;
             const WAVE_LIFETIME_MS = (WAVE_MAX_RADIUS / WAVE_SPEED) * 1000;
 
+            const NUM_CAM_TRAPS_DESKTOP = 14;
+            const NUM_CAM_TRAPS_MOBILE = 6;
+            const CAM_TRAP_RADIUS_DESKTOP = 52;
+            const CAM_TRAP_RADIUS_MOBILE = 32;
+            const CAM_TRAP_ARC = Math.PI / 4;
+            const CAM_TRAP_COOLDOWN_FRAMES = 90;
+
+            let NUM_CAM_TRAPS = NUM_CAM_TRAPS_DESKTOP;
+            let CAM_TRAP_RADIUS = CAM_TRAP_RADIUS_DESKTOP;
+
             let NUM_TRAPS = NUM_TRAPS_DESKTOP;
             let TRAP_RADIUS = TRAP_RADIUS_DESKTOP;
             let EDGE_MARGIN = EDGE_MARGIN_DESKTOP;
@@ -767,6 +776,8 @@
                 '#6fde6e', '#3a86ff', '#ff4d97', '#c879ff', '#2ee59d',
                 '#ff7b00', '#06aed5', '#ff3864', '#4cc9f0', '#a7ff83'
             ];
+
+            let camTraps = [];
 
             let width, height, dpr, topInset = 0;
             let walkers = [];
@@ -781,8 +792,8 @@
             function resize() {
                 const rect = hero.getBoundingClientRect();
                 const nav = document.querySelector('nav');
-                const navRect = nav ? nav.getBoundingClientRect() : { bottom: 0 };
-                topInset = Math.max(0, navRect.bottom - rect.top);
+                const navRect = nav ? nav.getBoundingClientRect() : { height: 0 };
+                topInset = Math.max(0, navRect.height);
 
                 dpr = Math.max(2, Math.min(window.devicePixelRatio || 1, 3));
                 width = rect.width;
@@ -847,7 +858,8 @@
                     tetherX: 0,
                     tetherY: 0,
                     color: COLORS[Math.floor(Math.random() * COLORS.length)],
-                    pendingPoints: [[startX, startY]]
+                    pendingPoints: [[startX, startY]],
+                    lastCamTrapHit: {}
                 };
                 enterState(walker, Math.random() < 0.5 ? 'transit' : 'explore');
                 return walker;
@@ -875,27 +887,38 @@
 
                 const maxTraps = isMobile ? NUM_TRAPS_MOBILE : NUM_TRAPS_DESKTOP;
                 NUM_TRAPS = Math.max(2, Math.min(maxTraps, capacity));
+
+                const camBaseRadius = isMobile ? CAM_TRAP_RADIUS_MOBILE : CAM_TRAP_RADIUS_DESKTOP;
+                CAM_TRAP_RADIUS = Math.max(10, Math.min(camBaseRadius, smallerDim * 0.1));
+
+                const camCellSize = CAM_TRAP_RADIUS * 2 + TRAP_MIN_GAP;
+                const camCols = Math.max(1, Math.floor(usableW / camCellSize));
+                const camRows = Math.max(1, Math.floor(usableH / camCellSize));
+                const camCapacity = Math.max(2, camCols * camRows);
+
+                const maxCamTraps = isMobile ? NUM_CAM_TRAPS_MOBILE : NUM_CAM_TRAPS_DESKTOP;
+                NUM_CAM_TRAPS = Math.max(2, Math.min(maxCamTraps, camCapacity));
             }
 
-            function overlapsTitle(x, y) {
+            function overlapsTitle(x, y, radius) {
                 if (!titleRect) return false;
                 const closestX = Math.max(titleRect.left, Math.min(x, titleRect.right));
                 const closestY = Math.max(titleRect.top, Math.min(y, titleRect.bottom));
                 const dx = x - closestX;
                 const dy = y - closestY;
-                return (dx * dx + dy * dy) < (TRAP_RADIUS * TRAP_RADIUS);
+                return (dx * dx + dy * dy) < (radius * radius);
             }
 
-            function makeTrap(existing) {
+            function placePoint(radius, blockers) {
                 const cx = width / 2;
                 const cy = topInset + (height - topInset) / 2;
-                const minX = TRAP_MARGIN + TRAP_RADIUS;
-                const maxX = width - TRAP_MARGIN - TRAP_RADIUS;
-                const minY = topInset + TRAP_MARGIN + TRAP_RADIUS;
-                const maxY = height - TRAP_MARGIN - TRAP_RADIUS;
+                const minX = TRAP_MARGIN + radius;
+                const maxX = width - TRAP_MARGIN - radius;
+                const minY = topInset + TRAP_MARGIN + radius;
+                const maxY = height - TRAP_MARGIN - radius;
 
                 if (maxX <= minX || maxY <= minY) {
-                    return { x: cx, y: cy, count: 0, pulse: 0 };
+                    return { x: cx, y: cy, found: false };
                 }
 
                 const CANDIDATES = 40;
@@ -907,15 +930,15 @@
                     const x = minX + Math.random() * (maxX - minX);
                     const y = minY + Math.random() * (maxY - minY);
 
-                    if (overlapsTitle(x, y)) continue;
+                    if (overlapsTitle(x, y, radius)) continue;
 
                     let valid = true;
                     let minDistToOther = Infinity;
-                    for (const t of existing) {
-                        const dx = t.x - x;
-                        const dy = t.y - y;
+                    for (const b of blockers) {
+                        const dx = b.x - x;
+                        const dy = b.y - y;
                         const dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < (TRAP_RADIUS * 2 + TRAP_MIN_GAP)) {
+                        if (dist < (radius + b.radius + TRAP_MIN_GAP)) {
                             valid = false;
                             break;
                         }
@@ -923,7 +946,7 @@
                     }
                     if (!valid) continue;
 
-                    const score = existing.length === 0 ? 0 : minDistToOther;
+                    const score = blockers.length === 0 ? 0 : minDistToOther;
                     if (score > bestScore) {
                         bestScore = score;
                         bestX = x;
@@ -937,7 +960,22 @@
                     bestY = minY;
                 }
 
-                return { x: bestX, y: bestY, count: 0, pulse: 0 };
+                return { x: bestX, y: bestY, found };
+            }
+
+            function makeTrap(existing) {
+                const blockers = existing.map(t => ({ x: t.x, y: t.y, radius: TRAP_RADIUS }))
+                    .concat(camTraps.map(t => ({ x: t.x, y: t.y, radius: CAM_TRAP_RADIUS })));
+                const { x, y } = placePoint(TRAP_RADIUS, blockers);
+                return { x, y, count: 0, pulse: 0 };
+            }
+
+            function makeCamTrap(existing) {
+                const blockers = existing.map(t => ({ x: t.x, y: t.y, radius: CAM_TRAP_RADIUS }))
+                    .concat(traps.map(t => ({ x: t.x, y: t.y, radius: TRAP_RADIUS })));
+                const { x, y } = placePoint(CAM_TRAP_RADIUS, blockers);
+                const facing = Math.random() * Math.PI * 2;
+                return { x, y, facing, count: 0, pulse: 0 };
             }
 
             function init() {
@@ -947,6 +985,10 @@
                 traps = [];
                 for (let i = 0; i < NUM_TRAPS; i++) {
                     traps.push(makeTrap(traps));
+                }
+                camTraps = [];
+                for (let i = 0; i < NUM_CAM_TRAPS; i++) {
+                    camTraps.push(makeCamTrap(camTraps));
                 }
                 waves = [];
                 frameCount = 0;
@@ -958,6 +1000,26 @@
                 while (d > Math.PI) d -= Math.PI * 2;
                 while (d < -Math.PI) d += Math.PI * 2;
                 return d;
+            }
+
+            function checkCamTraps(walker) {
+                camTraps.forEach((trap, i) => {
+                    const dx = walker.x - trap.x;
+                    const dy = walker.y - trap.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist > CAM_TRAP_RADIUS) return;
+
+                    const angleToWalker = Math.atan2(dy, dx);
+                    const diff = Math.abs(angleDiff(angleToWalker, trap.facing));
+                    if (diff > CAM_TRAP_ARC / 2) return;
+
+                    const lastHit = walker.lastCamTrapHit[i] || -Infinity;
+                    if (frameCount - lastHit > CAM_TRAP_COOLDOWN_FRAMES) {
+                        trap.count += 1;
+                        trap.pulse = 1;
+                        walker.lastCamTrapHit[i] = frameCount;
+                    }
+                });
             }
 
             function maybeEmitWave(walker, now) {
@@ -1078,6 +1140,7 @@
                 }
 
                 maybeEmitWave(walker, now);
+                checkCamTraps(walker);
 
                 return { wrapped };
             }
@@ -1107,6 +1170,35 @@
                     const lx = trap.x;
                     const ly = trap.y + TRAP_RADIUS + 13;
                     trapCtx.font = (10 + pulseBoost * 2) + 'px Inter, sans-serif';
+                    trapCtx.textAlign = 'center';
+                    trapCtx.textBaseline = 'middle';
+                    trapCtx.fillStyle = `rgba(${lineRgb}, ${0.4 + pulseBoost * 0.5})`;
+                    trapCtx.fillText(trap.count, lx, ly);
+
+                    if (trap.pulse > 0) {
+                        trap.pulse = Math.max(0, trap.pulse - 0.04);
+                    }
+                });
+
+                camTraps.forEach(trap => {
+                    const pulseBoost = trap.pulse;
+                    const fillAlpha = (isDark ? 0.09 : 0.07) + pulseBoost * 0.18;
+                    const strokeAlpha = (isDark ? 0.26 : 0.22) + pulseBoost * 0.45;
+
+                    trapCtx.beginPath();
+                    trapCtx.moveTo(trap.x, trap.y);
+                    trapCtx.arc(trap.x, trap.y, CAM_TRAP_RADIUS, trap.facing - CAM_TRAP_ARC / 2, trap.facing + CAM_TRAP_ARC / 2);
+                    trapCtx.closePath();
+                    trapCtx.fillStyle = `rgba(${lineRgb}, ${fillAlpha})`;
+                    trapCtx.fill();
+                    trapCtx.lineWidth = 1;
+                    trapCtx.strokeStyle = `rgba(${lineRgb}, ${strokeAlpha})`;
+                    trapCtx.stroke();
+
+                    const labelDist = CAM_TRAP_RADIUS + 11;
+                    const lx = trap.x + Math.cos(trap.facing) * labelDist;
+                    const ly = trap.y + Math.sin(trap.facing) * labelDist;
+                    trapCtx.font = (9 + pulseBoost * 2) + 'px Inter, sans-serif';
                     trapCtx.textAlign = 'center';
                     trapCtx.textBaseline = 'middle';
                     trapCtx.fillStyle = `rgba(${lineRgb}, ${0.4 + pulseBoost * 0.5})`;
