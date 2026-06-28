@@ -280,8 +280,9 @@
 
         @media (max-width: 768px) {
             .hero {
-                min-height: auto;
-                height: 520px;
+                min-height: 100vh;
+                min-height: 100dvh;
+                height: auto;
                 padding: 70px 1rem 2rem 1rem;
                 justify-content: center;
             }
@@ -298,7 +299,6 @@
 
         @media (max-width: 480px) {
             .hero {
-                height: 460px;
                 padding: 60px 1.25rem 1.5rem 1.25rem;
             }
 
@@ -717,11 +717,12 @@
             const trapCtx = trapCanvas.getContext('2d');
             const ctx = walkerCanvas.getContext('2d');
             const hero = walkerCanvas.closest('.hero');
+            const heroTitle = hero.querySelector('h1');
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             const NUM_WALKERS_DESKTOP = 20;
             const NUM_WALKERS_MOBILE = 11;
-            const DOT_RADIUS = 1.1;
+            const DOT_RADIUS = 0.7;
             const EDGE_MARGIN_DESKTOP = 90;
             const EDGE_MARGIN_MOBILE = 36;
 
@@ -740,15 +741,19 @@
             const RESET_INTERVAL_MS = 3 * 60 * 1000;
             const RESET_FADE_MS = 1200;
 
-            const NUM_TRAPS_DESKTOP = 12;
-            const NUM_TRAPS_MOBILE = 6;
+            const NUM_TRAPS_DESKTOP = 20;
+            const NUM_TRAPS_MOBILE = 9;
             const TRAP_RADIUS_DESKTOP = 42;
             const TRAP_RADIUS_MOBILE = 26;
             const TRAP_MARGIN = 20;
             const TRAP_MIN_GAP = 14;
-            const TRAP_CENTER_BIAS = 0.6;
             const TRAP_COOLDOWN_FRAMES = 90;
             const MOBILE_BREAKPOINT = 768;
+
+            const WAVE_EMIT_CHANCE = 0.006;
+            const WAVE_SPEED = 90;
+            const WAVE_MAX_RADIUS = 70;
+            const WAVE_LIFETIME_MS = (WAVE_MAX_RADIUS / WAVE_SPEED) * 1000;
 
             let NUM_TRAPS = NUM_TRAPS_DESKTOP;
             let TRAP_RADIUS = TRAP_RADIUS_DESKTOP;
@@ -766,10 +771,12 @@
             let width, height, dpr, topInset = 0;
             let walkers = [];
             let traps = [];
+            let waves = [];
             let animationId = null;
             let frameCount = 0;
             let sessionStart = performance.now();
             let resetFadeStart = null;
+            let titleRect = null;
 
             function resize() {
                 const rect = hero.getBoundingClientRect();
@@ -789,6 +796,17 @@
                 });
                 trapCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
                 ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+                if (heroTitle) {
+                    const tRect = heroTitle.getBoundingClientRect();
+                    const pad = 24;
+                    titleRect = {
+                        left: tRect.left - rect.left - pad,
+                        right: tRect.right - rect.left + pad,
+                        top: tRect.top - rect.top - pad,
+                        bottom: tRect.bottom - rect.top + pad
+                    };
+                }
             }
 
             function randomBetween(min, max) {
@@ -811,9 +829,11 @@
 
             function makeWalker() {
                 const angle = Math.random() * Math.PI * 2;
+                const startX = Math.random() * width;
+                const startY = topInset + Math.random() * (height - topInset);
                 const walker = {
-                    x: Math.random() * width,
-                    y: topInset + Math.random() * (height - topInset),
+                    x: startX,
+                    y: startY,
                     angle,
                     targetAngle: angle,
                     state: 'transit',
@@ -822,7 +842,7 @@
                     tetherX: 0,
                     tetherY: 0,
                     color: COLORS[Math.floor(Math.random() * COLORS.length)],
-                    lastTrapHit: {}
+                    pendingPoints: [[startX, startY]]
                 };
                 enterState(walker, Math.random() < 0.5 ? 'transit' : 'explore');
                 return walker;
@@ -852,11 +872,13 @@
                 NUM_TRAPS = Math.max(2, Math.min(maxTraps, capacity));
             }
 
-            function trapsOverlap(a, bx, by) {
-                const dx = a.x - bx;
-                const dy = a.y - by;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                return dist < (TRAP_RADIUS * 2 + TRAP_MIN_GAP);
+            function overlapsTitle(x, y) {
+                if (!titleRect) return false;
+                const closestX = Math.max(titleRect.left, Math.min(x, titleRect.right));
+                const closestY = Math.max(titleRect.top, Math.min(y, titleRect.bottom));
+                const dx = x - closestX;
+                const dy = y - closestY;
+                return (dx * dx + dy * dy) < (TRAP_RADIUS * TRAP_RADIUS);
             }
 
             function makeTrap(existing) {
@@ -871,23 +893,43 @@
                     return { x: cx, y: cy, count: 0, pulse: 0 };
                 }
 
-                let bestX = cx, bestY = cy;
-                for (let attempt = 0; attempt < 60; attempt++) {
-                    const rx = Math.random() * 2 - 1;
-                    const ry = Math.random() * 2 - 1;
-                    const biasedX = Math.sign(rx) * Math.pow(Math.abs(rx), 1 + TRAP_CENTER_BIAS);
-                    const biasedY = Math.sign(ry) * Math.pow(Math.abs(ry), 1 + TRAP_CENTER_BIAS);
-                    const x = cx + biasedX * (maxX - cx);
-                    const y = cy + biasedY * (maxY - cy);
+                const CANDIDATES = 40;
+                let bestX = minX, bestY = minY;
+                let bestScore = -Infinity;
+                let found = false;
 
-                    if (x < minX || x > maxX || y < minY || y > maxY) continue;
+                for (let attempt = 0; attempt < CANDIDATES; attempt++) {
+                    const x = minX + Math.random() * (maxX - minX);
+                    const y = minY + Math.random() * (maxY - minY);
 
-                    const clashes = existing.some(t => trapsOverlap(t, x, y));
-                    if (!clashes) {
+                    if (overlapsTitle(x, y)) continue;
+
+                    let valid = true;
+                    let minDistToOther = Infinity;
+                    for (const t of existing) {
+                        const dx = t.x - x;
+                        const dy = t.y - y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < (TRAP_RADIUS * 2 + TRAP_MIN_GAP)) {
+                            valid = false;
+                            break;
+                        }
+                        if (dist < minDistToOther) minDistToOther = dist;
+                    }
+                    if (!valid) continue;
+
+                    const score = existing.length === 0 ? 0 : minDistToOther;
+                    if (score > bestScore) {
+                        bestScore = score;
                         bestX = x;
                         bestY = y;
-                        break;
+                        found = true;
                     }
+                }
+
+                if (!found) {
+                    bestX = minX;
+                    bestY = minY;
                 }
 
                 return { x: bestX, y: bestY, count: 0, pulse: 0 };
@@ -901,6 +943,7 @@
                 for (let i = 0; i < NUM_TRAPS; i++) {
                     traps.push(makeTrap(traps));
                 }
+                waves = [];
                 frameCount = 0;
                 ctx.clearRect(0, 0, width, height);
             }
@@ -912,26 +955,57 @@
                 return d;
             }
 
-            function checkTraps(walker) {
+            function maybeEmitWave(walker, now) {
+                if (Math.random() > WAVE_EMIT_CHANCE) return;
+
+                const listeningTraps = [];
                 traps.forEach((trap, i) => {
                     const dx = walker.x - trap.x;
                     const dy = walker.y - trap.y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist > TRAP_RADIUS) return;
-
-                    const lastHit = walker.lastTrapHit[i] || -Infinity;
-                    if (frameCount - lastHit > TRAP_COOLDOWN_FRAMES) {
-                        trap.count += 1;
-                        trap.pulse = 1;
-                        walker.lastTrapHit[i] = frameCount;
+                    if (dist <= TRAP_RADIUS) {
+                        listeningTraps.push({ index: i, dist });
                     }
+                });
+
+                waves.push({
+                    x: walker.x,
+                    y: walker.y,
+                    startTime: now,
+                    color: walker.color,
+                    listeningTraps
                 });
             }
 
-            function step(walker) {
-                const prevX = walker.x;
-                const prevY = walker.y;
+            function updateWaves(now) {
+                waves = waves.filter(wave => {
+                    const age = now - wave.startTime;
+                    if (age > WAVE_LIFETIME_MS) return false;
 
+                    const radius = (age / 1000) * WAVE_SPEED;
+                    wave.currentRadius = radius;
+
+                    wave.listeningTraps.forEach(({ index, dist }) => {
+                        if (wave.triggered && wave.triggered[index]) return;
+                        if (radius >= dist) {
+                            const trap = traps[index];
+                            if (!trap) return;
+                            const lastHit = trap.lastWaveHit || -Infinity;
+                            if (frameCount - lastHit > TRAP_COOLDOWN_FRAMES) {
+                                trap.count += 1;
+                                trap.pulse = 1;
+                                trap.lastWaveHit = frameCount;
+                            }
+                            wave.triggered = wave.triggered || {};
+                            wave.triggered[index] = true;
+                        }
+                    });
+
+                    return true;
+                });
+            }
+
+            function step(walker, now) {
                 walker.stateFrames += 1;
                 if (walker.stateFrames > walker.stateDuration) {
                     enterState(walker, walker.state === 'transit' ? 'explore' : 'transit');
@@ -998,9 +1072,9 @@
                     walker.tetherY = walker.y;
                 }
 
-                checkTraps(walker);
+                maybeEmitWave(walker, now);
 
-                return { prevX, prevY, wrapped };
+                return { wrapped };
             }
 
             function renderTraps(isDark) {
@@ -1037,6 +1111,21 @@
                         trap.pulse = Math.max(0, trap.pulse - 0.04);
                     }
                 });
+
+                waves.forEach(wave => {
+                    const radius = wave.currentRadius || 0;
+                    const lifeFrac = radius / WAVE_MAX_RADIUS;
+                    const alpha = Math.max(0, 0.5 * (1 - lifeFrac));
+                    if (alpha <= 0 || radius <= 0) return;
+
+                    trapCtx.beginPath();
+                    trapCtx.arc(wave.x, wave.y, radius, 0, Math.PI * 2);
+                    trapCtx.lineWidth = 0.8;
+                    trapCtx.strokeStyle = wave.color;
+                    trapCtx.globalAlpha = alpha;
+                    trapCtx.stroke();
+                    trapCtx.globalAlpha = 1;
+                });
             }
 
             function draw() {
@@ -1062,19 +1151,23 @@
                     }
                 }
 
+                updateWaves(now);
                 renderTraps(isDark);
 
-                walkers.forEach(walker => {
-                    const { prevX, prevY, wrapped } = step(walker);
+                const FLUSH_EVERY = 6;
 
-                    if (!wrapped) {
-                        ctx.beginPath();
-                        ctx.moveTo(prevX, prevY);
-                        ctx.lineTo(walker.x, walker.y);
-                        ctx.strokeStyle = walker.color;
-                        ctx.lineWidth = 0.25;
-                        ctx.lineCap = 'round';
-                        ctx.stroke();
+                walkers.forEach(walker => {
+                    const { wrapped } = step(walker, now);
+
+                    if (wrapped) {
+                        flushWalkerPath(walker);
+                        walker.pendingPoints = [[walker.x, walker.y]];
+                    } else {
+                        walker.pendingPoints.push([walker.x, walker.y]);
+                        if (walker.pendingPoints.length > FLUSH_EVERY) {
+                            flushWalkerPath(walker);
+                            walker.pendingPoints = [[walker.x, walker.y]];
+                        }
                     }
 
                     ctx.beginPath();
@@ -1085,6 +1178,21 @@
 
                 frameCount += 1;
                 animationId = requestAnimationFrame(draw);
+            }
+
+            function flushWalkerPath(walker) {
+                const pts = walker.pendingPoints;
+                if (pts.length < 2) return;
+                ctx.beginPath();
+                ctx.moveTo(pts[0][0], pts[0][1]);
+                for (let i = 1; i < pts.length; i++) {
+                    ctx.lineTo(pts[i][0], pts[i][1]);
+                }
+                ctx.strokeStyle = walker.color;
+                ctx.lineWidth = 0.6;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.stroke();
             }
 
             function drawStatic() {
