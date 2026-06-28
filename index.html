@@ -788,14 +788,19 @@
                 width = rect.width;
                 height = rect.height;
 
-                [trapCanvas, walkerCanvas].forEach(c => {
-                    c.width = width * dpr;
-                    c.height = height * dpr;
-                    c.style.width = width + 'px';
-                    c.style.height = height + 'px';
-                });
-                trapCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                const newCanvasWidth = Math.round(width * dpr);
+                const newCanvasHeight = Math.round(height * dpr);
+
+                if (trapCanvas.width !== newCanvasWidth || trapCanvas.height !== newCanvasHeight) {
+                    [trapCanvas, walkerCanvas].forEach(c => {
+                        c.width = newCanvasWidth;
+                        c.height = newCanvasHeight;
+                        c.style.width = width + 'px';
+                        c.style.height = height + 'px';
+                    });
+                    trapCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                }
 
                 if (heroTitle) {
                     const tRect = heroTitle.getBoundingClientRect();
@@ -1208,20 +1213,37 @@
             }
 
             let resizeTimeout;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(() => {
-                    if (animationId) cancelAnimationFrame(animationId);
-                    init();
-                    sessionStart = performance.now();
-                    resetFadeStart = null;
-                    if (prefersReducedMotion) {
-                        drawStatic();
-                    } else {
-                        draw();
-                    }
-                }, 200);
-            });
+            let lastInnerWidth = window.innerWidth;
+
+            function handleLayoutChange() {
+                resize();
+
+                if (window.innerWidth === lastInnerWidth) return;
+                lastInnerWidth = window.innerWidth;
+
+                if (animationId) cancelAnimationFrame(animationId);
+                init();
+                sessionStart = performance.now();
+                resetFadeStart = null;
+                if (prefersReducedMotion) {
+                    drawStatic();
+                } else {
+                    draw();
+                }
+            }
+
+            if (typeof ResizeObserver !== 'undefined') {
+                const observer = new ResizeObserver(() => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(handleLayoutChange, 150);
+                });
+                observer.observe(hero);
+            } else {
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(handleLayoutChange, 200);
+                });
+            }
 
             const themeToggleBtn = document.getElementById('themeToggle');
             if (themeToggleBtn) {
